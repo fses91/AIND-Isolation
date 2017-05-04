@@ -258,7 +258,7 @@ if __name__ == "__main__":
 
     # create an isolation board (by default 7x7)
     player1 = RandomPlayer()
-    player2 = MinimaxPlayer(timeout=0.1)
+    player2 = MinimaxPlayer(timeout=0.1, search_depth=2)
     #player2 = GreedyPlayer()
     game = Board(player1, player2)
 
