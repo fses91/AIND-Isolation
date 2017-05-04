@@ -3,6 +3,7 @@ test your agent's strength against a set of known agents using tournament.py
 and include the results in your report.
 """
 import random
+import math
 
 
 class SearchTimeout(Exception):
@@ -213,16 +214,67 @@ class MinimaxPlayer(IsolationPlayer):
             raise SearchTimeout()
 
         # TODO: finish this function!
-        moves = game.get_legal_moves()
+
+        best_move = (-1, -1)
+        best_value = -math.inf
+        for move in game.get_legal_moves():
+            value = self.min_value(game.forecast_move(move), depth)
+            if value > best_value:
+                best_value = value
+                best_move = move
+
+        return best_move
 
 
-        for move in moves:
+
+
+
+
+    def max_value(self, game, depth):
+
+        if self.time_left() < self.TIMER_THRESHOLD:
+            raise SearchTimeout()
+
+        if depth < 0:
+            return len(game.get_legal_moves())
+
+        v = -math.inf
+        for move in game.get_legal_moves():
+            v = max(v, self.min_value(game.forecast_move(move), depth - 1))
+        return v
+
+    def min_value(self, game, depth):
+
+        if self.time_left() < self.TIMER_THRESHOLD:
+            raise SearchTimeout()
+
+        if depth < 0:
+            return len(game.get_legal_moves())
+
+        v = math.inf
+        for move in game.get_legal_moves():
+            v = min(v, self.max_value(game.forecast_move(move), depth - 1))
+        return v
 
 
 
 
 
-        raise NotImplementedError
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 class AlphaBetaPlayer(IsolationPlayer):
