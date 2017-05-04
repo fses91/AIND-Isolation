@@ -36,7 +36,7 @@ def custom_score(game, player):
         The heuristic value of the current game state to the specified player.
     """
     # TODO: finish this function!
-    return game.get_legal_moves(player)
+    return len(game.get_legal_moves(player))
 
 
 def custom_score_2(game, player):
@@ -250,27 +250,6 @@ class MinimaxPlayer(IsolationPlayer):
             v = min(v, self.max_value(game.forecast_move(move), depth - 1))
         return v
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 class AlphaBetaPlayer(IsolationPlayer):
     """Game-playing agent that chooses a move using iterative deepening minimax
     search with alpha-beta pruning. You must finish and test this player to
@@ -361,4 +340,4 @@ class AlphaBetaPlayer(IsolationPlayer):
             raise SearchTimeout()
 
         # TODO: finish this function!
-        raise NotImplementedError
+        return (-1, -1)
