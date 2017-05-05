@@ -377,30 +377,3 @@ class AlphaBetaPlayer(IsolationPlayer):
             b = min(b, v)
 
         return v
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
