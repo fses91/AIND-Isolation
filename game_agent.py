@@ -213,7 +213,6 @@ class MinimaxPlayer(IsolationPlayer):
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
-        # TODO: finish this function!
         best_move = (-1, -1)
         best_value = -math.inf
         for move in game.get_legal_moves():
@@ -228,7 +227,6 @@ class MinimaxPlayer(IsolationPlayer):
 
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
-
         if depth == 0:
             return self.score(game, self)
 
@@ -241,7 +239,6 @@ class MinimaxPlayer(IsolationPlayer):
 
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
-
         if depth == 0:
             return self.score(game, self)
 
@@ -339,5 +336,71 @@ class AlphaBetaPlayer(IsolationPlayer):
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
-        # TODO: finish this function!
-        return (-1, -1)
+        best_move = (-1, -1)
+        best_value = -math.inf
+        for move in game.get_legal_moves():
+            value = self.min(game.forecast_move(move), depth - 1, -math.inf, math.inf)
+            if value > best_value:
+                best_value = value
+                best_move = move
+
+        return best_move
+
+    def max_value(self, game, depth, a, b):
+
+        if self.time_left() < self.TIMER_THRESHOLD:
+            raise SearchTimeout()
+        if depth == 0:
+            return self.score(game, self)
+
+        v = -math.inf
+        for move in game.get_legal_moves():
+            v = max(v, self.min_value(game.forecast_move(move), depth, a, b))
+            if v >= b:
+                return v
+            a = max(a, v)
+
+        return v
+
+    def min_value(self, game, depth, a, b):
+
+        if self.time_left() < self.TIMER_THRESHOLD:
+            raise SearchTimeout()
+        if depth == 0:
+            return self.score(game, self)
+
+        v = math.inf
+        for move in game.get_legal_moves():
+            v = min(v, self.min_value(game.forecast_move(move), depth, a, b))
+            if v <= a:
+                return v
+            b = min(b, v)
+
+        return v
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
