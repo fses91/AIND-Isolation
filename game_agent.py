@@ -216,9 +216,9 @@ class MinimaxPlayer(IsolationPlayer):
         best_move = (-1, -1)
         best_value = -math.inf
         for move in game.get_legal_moves():
-            value = self.min_value(game.forecast_move(move), depth - 1)
-            if value > best_value:
-                best_value = value
+            v = self.min_value(game.forecast_move(move), depth - 1)
+            if v > best_value:
+                best_value = v
                 best_move = move
 
         return best_move
@@ -285,8 +285,20 @@ class AlphaBetaPlayer(IsolationPlayer):
         """
         self.time_left = time_left
 
-        # TODO: finish this function!
-        raise NotImplementedError
+        # Initialize the best move so that this function returns something
+        # in case the search fails due to timeout
+        best_move = (-1, -1)
+
+        try:
+            # The try/except block will automatically catch the exception
+            # raised when the timer is about to expire.
+            return self.alphabeta(game, self.search_depth)
+
+        except SearchTimeout:
+            pass  # Handle any actions required after timeout as needed
+
+        # Return the best move from the last completed search iteration
+        return best_move
 
     def alphabeta(self, game, depth, alpha=float("-inf"), beta=float("inf")):
         """Implement depth-limited minimax search with alpha-beta pruning as
@@ -337,16 +349,15 @@ class AlphaBetaPlayer(IsolationPlayer):
             raise SearchTimeout()
 
         best_move = (-1, -1)
-        best_value = -math.inf
         for move in game.get_legal_moves():
-            value = self.min(game.forecast_move(move), depth - 1, -math.inf, math.inf)
-            if value > best_value:
-                best_value = value
+            v = self.min_value(game.forecast_move(move), depth - 1, alpha, beta)
+            if v > alpha:
                 best_move = move
+                alpha = v
 
         return best_move
 
-    def max_value(self, game, depth, a, b):
+    def max_value(self, game, depth, alpha, beta):
 
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
@@ -355,14 +366,14 @@ class AlphaBetaPlayer(IsolationPlayer):
 
         v = -math.inf
         for move in game.get_legal_moves():
-            v = max(v, self.min_value(game.forecast_move(move), depth, a, b))
-            if v >= b:
+            v = max(v, self.min_value(game.forecast_move(move), depth - 1, alpha, beta))
+            if v >= beta:
                 return v
-            a = max(a, v)
+            alpha = max(alpha, v)
 
         return v
 
-    def min_value(self, game, depth, a, b):
+    def min_value(self, game, depth, alpha, beta):
 
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
@@ -371,9 +382,9 @@ class AlphaBetaPlayer(IsolationPlayer):
 
         v = math.inf
         for move in game.get_legal_moves():
-            v = min(v, self.min_value(game.forecast_move(move), depth, a, b))
-            if v <= a:
+            v = min(v, self.max_value(game.forecast_move(move), depth - 1, alpha, beta))
+            if v <= alpha:
                 return v
-            b = min(b, v)
+            beta = min(beta, v)
 
         return v

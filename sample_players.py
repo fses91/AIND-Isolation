@@ -255,10 +255,11 @@ class HumanPlayer():
 if __name__ == "__main__":
     from isolation import Board
     from game_agent import MinimaxPlayer
+    from game_agent import AlphaBetaPlayer
 
     # create an isolation board (by default 7x7)
     player1 = RandomPlayer()
-    player2 = MinimaxPlayer(timeout=0.1, search_depth=2)
+    player2 = AlphaBetaPlayer(timeout=0.1, search_depth=2)
     #player2 = GreedyPlayer()
     game = Board(player1, player2)
 
