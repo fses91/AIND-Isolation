@@ -35,8 +35,18 @@ def custom_score(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    # TODO: finish this function!
-    return len(game.get_legal_moves(player))
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+
+    my_moves = len(game.get_legal_moves())
+    opponent = game.get_opponent(player)
+    opponent_moves = len(game.get_legal_moves(opponent))
+    score = my_moves - opponent_moves
+
+    return float(score)
 
 
 def custom_score_2(game, player):
@@ -61,8 +71,25 @@ def custom_score_2(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    # TODO: finish this function!
-    raise NotImplementedError
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+
+    my_moves = len(game.get_legal_moves())
+    opponent = game.get_opponent(player)
+    opponent_moves = len(game.get_legal_moves(opponent))
+
+    score = my_moves - opponent_moves
+
+    x, y = game.get_player_location(player)
+    if x == 0 or x == game.width - 1:
+        score -= 1
+    if y == 0 or y == game.height - 1:
+        score -= 1
+
+    return float(score)
 
 
 def custom_score_3(game, player):
@@ -87,8 +114,25 @@ def custom_score_3(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    # TODO: finish this function!
-    raise NotImplementedError
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+
+    my_moves = len(game.get_legal_moves())
+    opponent = game.get_opponent(player)
+    opponent_moves = len(game.get_legal_moves(opponent))
+
+    score = my_moves - opponent_moves
+
+    corners = [(0, 0), (0, game.width), (game.height, 0), (game.height, game.width)]
+    x, y = game.get_player_location(player)
+
+    if (x, y) in corners:
+        return float(score - 2)
+
+    return float(score)
 
 
 class IsolationPlayer:
@@ -292,12 +336,10 @@ class AlphaBetaPlayer(IsolationPlayer):
         try:
             # The try/except block will automatically catch the exception
             # raised when the timer is about to expire.
-            depth = 0
+            depth = 1
             while True:
                 best_move = self.alphabeta(game, depth)
                 depth += 1
-
-            #return self.alphabeta(game, self.search_depth)
 
         except SearchTimeout:
             pass  # Handle any actions required after timeout as needed
