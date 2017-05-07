@@ -41,15 +41,9 @@ def custom_score(game, player):
     if game.is_winner(player):
         return float("inf")
 
-
-
     my_moves = len(game.get_legal_moves())
-    opponent = game.get_opponent(player)
-    opponent_moves = len(game.get_legal_moves(opponent))
-    score = my_moves - opponent_moves
-
-
-
+    opponent_moves = len(game.get_legal_moves(game.get_opponent(player)))
+    score = my_moves - opponent_moves * 2
 
     return float(score)
 
@@ -83,9 +77,8 @@ def custom_score_2(game, player):
         return float("inf")
 
     my_moves = len(game.get_legal_moves())
-    opponent = game.get_opponent(player)
-    opponent_moves = len(game.get_legal_moves(opponent))
-    score = my_moves - opponent_moves
+    opponent_moves = len(game.get_legal_moves(game.get_opponent(player)))
+    score = my_moves / (my_moves + opponent_moves)
 
     return float(score)
 
@@ -112,23 +105,18 @@ def custom_score_3(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    if game.is_loser(player):
-        return float("-inf")
-
-    if game.is_winner(player):
-        return float("inf")
-
     my_moves = len(game.get_legal_moves())
-    opponent = game.get_opponent(player)
-    opponent_moves = len(game.get_legal_moves(opponent))
+    opponent_moves = len(game.get_legal_moves(game.get_opponent(player)))
 
     score = my_moves - opponent_moves
 
     corners = [(0, 0), (0, game.width), (game.height, 0), (game.height, game.width)]
-    x, y = game.get_player_location(player)
-
-    if (x, y) in corners:
-        return float(score - 2)
+    # check if player is in corner
+    if game.get_player_location(player) in corners:
+        score -= 2
+    # check if opponent is in corner
+    if game.get_player_location(game.get_opponent(player)) in corners:
+        score += 2
 
     return float(score)
 
@@ -288,6 +276,7 @@ class MinimaxPlayer(IsolationPlayer):
         for move in game.get_legal_moves():
             v = min(v, self.max_value(game.forecast_move(move), depth - 1))
         return v
+
 
 class AlphaBetaPlayer(IsolationPlayer):
     """Game-playing agent that chooses a move using iterative deepening minimax
