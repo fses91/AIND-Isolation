@@ -41,10 +41,15 @@ def custom_score(game, player):
     if game.is_winner(player):
         return float("inf")
 
+
+
     my_moves = len(game.get_legal_moves())
     opponent = game.get_opponent(player)
     opponent_moves = len(game.get_legal_moves(opponent))
     score = my_moves - opponent_moves
+
+
+
 
     return float(score)
 
@@ -80,14 +85,7 @@ def custom_score_2(game, player):
     my_moves = len(game.get_legal_moves())
     opponent = game.get_opponent(player)
     opponent_moves = len(game.get_legal_moves(opponent))
-
     score = my_moves - opponent_moves
-
-    x, y = game.get_player_location(player)
-    if x == 0 or x == game.width - 1:
-        score -= 1
-    if y == 0 or y == game.height - 1:
-        score -= 1
 
     return float(score)
 
