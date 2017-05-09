@@ -254,7 +254,26 @@ class MinimaxPlayer(IsolationPlayer):
         return best_move
 
     def max_value(self, game, depth):
-
+        """Calculate the max-value of all legal moves, from the perspective
+        of the current player.
+        The implementation is based on:
+        https://github.com/aimacode/aima-pseudocode/blob/master/md/Minimax-Decision.md
+        
+        Parameters
+        ----------
+        game : isolation.Board
+            An instance of the Isolation game `Board` class representing the
+            current game stat
+        depth : int
+            Depth is an integer representing the maximum number of plies to
+            search in the game tree before aborting
+            
+        Returns
+        -------
+        (float)
+            The max-value of all legal moves, the value is calculated by the
+            self.score function.
+        """
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
         if depth == 0:
@@ -266,7 +285,26 @@ class MinimaxPlayer(IsolationPlayer):
         return v
 
     def min_value(self, game, depth):
-
+        """Calculate the min-value of all legal moves, from the perspective
+        of the current player.
+        The implementation is based on:
+        https://github.com/aimacode/aima-pseudocode/blob/master/md/Minimax-Decision.md
+        
+        Parameters
+        ----------
+        game : isolation.Board
+            An instance of the Isolation game `Board` class representing the
+            current game stat
+        depth : int
+            Depth is an integer representing the maximum number of plies to
+            search in the game tree before abortin
+            
+        Returns
+        -------
+        (float)
+            The min-value of all legal moves, the value is calculated by the
+            self.score function.
+        """
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
         if depth == 0:
@@ -392,7 +430,28 @@ class AlphaBetaPlayer(IsolationPlayer):
         return best_move
 
     def max_value(self, game, depth, alpha, beta):
+        """Calculate the max-value of all legal moves, from the perspective
+        of the current player. 
+        Prune the remaining moves, if the calculated value is greater or equal than a 
+        given beta value.
+        The implementation is based on:
+        https://github.com/aimacode/aima-pseudocode/blob/master/md/Alpha-Beta-Search.md
 
+        Parameters
+        ----------
+        game : isolation.Board
+            An instance of the Isolation game `Board` class representing the
+            current game stat
+        depth : int
+            Depth is an integer representing the maximum number of plies to
+            search in the game tree before aborting
+
+        Returns
+        -------
+        (float)
+            The max-value of all legal moves, the value is calculated by the
+            self.score function.
+        """
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
         if depth == 0:
@@ -408,7 +467,28 @@ class AlphaBetaPlayer(IsolationPlayer):
         return v
 
     def min_value(self, game, depth, alpha, beta):
+        """Calculate the min-value of all legal moves, from the perspective
+        of the current player. 
+        Prune the remaining moves, if the calculated value is smaller or equal than a 
+        given alpha value.
+        The implementation is based on:
+        https://github.com/aimacode/aima-pseudocode/blob/master/md/Alpha-Beta-Search.md
 
+        Parameters
+        ----------
+        game : isolation.Board
+            An instance of the Isolation game `Board` class representing the
+            current game stat
+        depth : int
+            Depth is an integer representing the maximum number of plies to
+            search in the game tree before aborting
+
+        Returns
+        -------
+        (float)
+            The min-value of all legal moves, the value is calculated by the
+            self.score function.
+        """
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
         if depth == 0:
