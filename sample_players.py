@@ -259,7 +259,7 @@ if __name__ == "__main__":
 
     # create an isolation board (by default 7x7)
     player1 = RandomPlayer()
-    player2 = AlphaBetaPlayer()
+    player2 = MinimaxPlayer()
     #player2 = GreedyPlayer()
     game = Board(player1, player2)
 
@@ -286,7 +286,7 @@ if __name__ == "__main__":
 
     # play the remainder of the game automatically -- outcome can be "illegal
     # move", "timeout", or "forfeit"
-    winner, history, outcome = game.play()
+    winner, history, outcome = game.play(time_limit=1000000)
     print("\nWinner: {}\nOutcome: {}".format(winner, outcome))
     print(game.to_string())
     print("Move history:\n{!s}".format(history))
